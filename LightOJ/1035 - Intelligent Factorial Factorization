@@ -1,0 +1,82 @@
+
+// BISMILLAHIR RAHMANIR RAHEEM
+// ALLAH IS WATCHING ME
+// Allah save us from COVID-19.Amin.
+
+//█▀█─█──█──█▀█─█─█
+//█▄█─█──█──█▄█─█▄█
+//█─█─█▄─█▄─█─█─█─█
+
+#include<bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+
+ll arr[101][101];
+
+void primeFactor()
+{
+    for(ll i=2;i<=100;i++){
+        ll x=i;
+    for(ll j=2;j<=100;j++){
+        ll freq = 0;
+        if(x % j == 0)
+        {
+            ll p = j;
+
+            while(x % j == 0)
+            {
+                freq++;
+                x /= p;
+            }
+        }
+        arr[i][j]=freq;
+       // cout<<i<<" "<<j<< " : "<<arr[i][j]<<" "<<'\n';
+
+
+    if(x<=1)break;
+    }
+    //cout<<x<<" ";
+    if(x>1){
+           arr[i][x]=1;
+    }
+    }
+}
+
+bool isprime(ll n){
+
+for(ll i=2;i*i<=n;i++){
+    if(!(n%i))return 0;
+}
+return 1;
+}
+int main()
+{
+    primeFactor();
+    ll t,tc=0;
+    cin>>t;
+
+    while(t--){
+     ll x;
+     cin>>x;
+     map<ll,ll> mp;
+     for(ll i=2;i<=x;i++){
+
+                for(ll j=2;j<=100;j++){
+                     mp[j]+=arr[i][j];
+                }
+     }
+     vector<pair<ll,ll> > v;
+     for(auto it =mp.begin();it!=mp.end();it++){
+                if(it->second!=0)v.push_back({it->first,it->second});
+     }
+     sort(v.begin(),v.end());
+     cout<<"Case "<<++tc<<": "<<x<<" = ";
+     for(auto it =v.begin();it!=v.end();it++){
+                if(it!=v.end()-1)cout<<it->first<<" ("<<it->second<<") * ";
+                else cout<<it->first<<" ("<<it->second<<")";
+     }
+     cout<<'\n';
+    }
+
+}
