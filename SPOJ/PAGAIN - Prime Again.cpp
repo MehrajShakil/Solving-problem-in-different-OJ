@@ -7,7 +7,7 @@ const ll MAXN = 1e7+1;
 bitset<MAXN> bs;
 
 vector<ll> primes;
-
+/// sieve algorithm diye 10^7 porjonto prime number ber kore niyechi.
 void sieve()
 {
     bs.set();
@@ -25,7 +25,7 @@ void sieve()
     }
 }
 
-
+/// ekta number check kortechi seti prime kina.
 bool isprime(ll n)
 {
     for(ll i=0; primes[i]*primes[i]<=n; i++)
@@ -41,12 +41,18 @@ void solve()
 
     ll n,sum=0;
     cin >> n;
-    n--;
+    if(n==3)
+    {
+        cout<<2<<'\n';
+        return;
+    }
 
-    if(!(n&1) && n!=2)
-        n--;
+    if(n&1)
+        n-=2; /// n odd hole 2 minus korechi.
+    else
+        n--;    /// n even hole 1 minus korechi
 
-    if(n<MAXN)
+    if(n<MAXN)   /// ei khane check korechi n ki 10^7 er vitore kina tahole amra precalculate sive diye answer pacci.
     {
         for(ll i=n;; i-=2)
         {
@@ -57,7 +63,9 @@ void solve()
             }
         }
     }
-    for(ll i=n;; i-=2)
+
+    for(ll i=n;; i-=2)  /// n er value 2 kore komacci karon akta odd theke 2 minus korle tar nearly smallest odd ta pawa jabe.
+
     {
         if(isprime(i))
         {
