@@ -3,47 +3,64 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
+const ll MAXN= 1e7;
 
-const ll MAXN = 1e8;
-long double harmonic[100001];
-ll ind=1000;
-int main()
+bitset<MAXN+1> bs;
+vector<ll> primes;
+
+void sieve()
 {
-
-    //ios::sync_with_stdio(0);
-    //cin.tie(0);
-    //cout.tie(0);
-    harmonic[0]=0;
-    long double nth=0;
-    for(ll i=1; i<=MAXN ; i++)
+    bs.set();
+    bs[0]=bs[1]=0;
+    for(ll  i=2; i<=MAXN; i++)
     {
-        nth+=(long double)(1.0/i);
-        if(ind==i)
+        if(bs[i])
         {
-            harmonic[i/1000]=nth;
-            ind+=1000;
-             //cout << i/1000 << endl;
-            // cout << ind << endl;
+            primes.push_back(i);
+            for(ll j=i*i; j<=MAXN; j+=i<<1)
+            {
+                bs[j]=0;
+            }
         }
     }
 
+
+}
+
+ll Factor(ll n)
+{
+    ll tot=0,ans=1;
+
+    for(ll i=0; i<primes.size() and primes[i]*primes[i]<=n; i++)
+    {
+        tot=0;
+        while(n%primes[i]==0)
+        {
+            n/=primes[i];
+            tot++;
+        }
+       ans*=(2*tot+1);
+    }
+    if(n>1)
+        ans*=3;
+
+    return ans/2+1;
+}
+
+int main()
+{
+
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    sieve();
     ll t,tc=0;
     cin >> t;
     while(t--)
     {
-        ll n;
+        ll n,ans=1,tot=0;
         cin >> n;
-
-        long double nth = harmonic[(n/1000)];
-
-        for(ll i = ((n/1000)*1000) +1 ; i <=n ; i++)
-        {
-            nth+=(1.0/i);
-        }
-
-        cout << fixed;
-        cout <<  setprecision(10);
-        cout << "Case " << ++tc << ": " << nth << '\n';
+        cout << "Case " << ++tc << ": " << Factor(n) << '\n';
     }
 
 }
