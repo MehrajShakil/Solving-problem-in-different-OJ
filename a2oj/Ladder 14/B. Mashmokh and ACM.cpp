@@ -88,25 +88,24 @@ ll n, k;
 ll dp[2001][2001];
 ll go( ll len, ll value )
 {
+    for ( ll i = 0 ; i<=n ; ++i ) dp[1][i] = 1;
 
-/// state
-
-    if(len==k)
-        return 1;
-
-///
-    ll &ret = dp[value][len];
-
-    if(ret!=-1)
-        return ret;
-
-    dp[value][len] = 0;
-
-    for ( ll i = value ; i<=n ; i+=value )
+    for ( ll i = 1 ; i<=k ; ++i )
     {
-        dp[value][len]+=go( len+1, i )%MOD;
+        for ( ll j = 1 ; j<=n ; ++j )
+        {
+            for ( ll k = j ; k<=n ; k+=j )
+            {
+                (dp[i][k]+=dp[i-1][j])%=MOD;
+            }
+        }
     }
-    return dp[value][len]%MOD;
+
+   ll res = 0;
+   for ( ll i = 1 ; i<=n ; ++i ){
+      (res+=dp[k][i])%=MOD;
+   }
+   return res;
 }
 
 
@@ -117,11 +116,11 @@ int main()
 {
 
     /// MOHAMMAD
-    /// recursive way.
-    memset ( dp, -1, sizeof dp );
+    /// bottom up
+
     cin >> n >> k;
 
-    cout << go( 0LL, 1LL );
+    cout << go( n, k );
 }
 
 /*
