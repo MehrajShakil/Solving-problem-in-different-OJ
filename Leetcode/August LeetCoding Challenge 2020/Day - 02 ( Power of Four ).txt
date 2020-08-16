@@ -1,1 +1,17 @@
 
+Approach 1 ::
+4 = 100.
+16 = 10000.
+64 = 1000000.
+If we right shift n by 4 and if we finally get 1 then answer is true.
+
+O(log4n).
+
+Approach ::
+
+if n is power of two then n&(n-1)==0.
+
+1 4 16 64  256.
+These are two's power and x%3 = 1.
+
+So, if ( n&(n-1)==0 and n%3==1 ) then n is 4's power.
