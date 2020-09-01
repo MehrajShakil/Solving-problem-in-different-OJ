@@ -16,3 +16,6 @@ So our minimum possible answer should less than 1e14.
 Observation 2 ::
 
 We try to find minimum possible answer using a brute force for every c while we are not find such c that minimum answer greater than 1e14.
+
+
+/// If you have any better approach , Feel free to share with me.
