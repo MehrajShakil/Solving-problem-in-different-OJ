@@ -1,1 +1,12 @@
 
+In this problem , given n string s1 , s2 , s3 ............... sn.
+
+we can do the following operation several times.
+
+In one operation we took a character from any string and remove the character from the string. Add this character at any string.
+
+So that our final n string should be equal.
+
+So, if every character's occurance should be multiple of the length.
+Then it is possible to equal them.
+
