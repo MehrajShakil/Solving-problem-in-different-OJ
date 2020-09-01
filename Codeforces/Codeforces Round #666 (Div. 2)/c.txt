@@ -1,0 +1,11 @@
+Basic :
+
+P = x*n + x.
+p = (n+1)*x.
+
+Observation 1:
+
+let x is our array value that is arr[i].
+if we take a segment of n-1. Then it is sure that after first operation, every arr[i] should become a multiple of n.
+
+after then we can easily make every number equal to 0.
