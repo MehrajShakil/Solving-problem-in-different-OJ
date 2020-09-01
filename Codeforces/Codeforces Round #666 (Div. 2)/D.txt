@@ -1,0 +1,20 @@
+Observation 1 ::
+
+If n = 1 or 2, then 'H' must win.
+
+Observation 2 ::
+
+sort the array increasing order.
+/// 0 base index.
+if ( arr[n-1] > sum of ( arr[0] .... arr[n-2] ) ) then 'H' must Win.
+
+else {
+remaining = (total sum - arr[n-1] * 2). ( half for 'H' and another fot "TL" ).
+if ( remaining become odd ) then 'H' must win.
+else "TL".
+}
+
+
+
+
+
