@@ -10,3 +10,6 @@ So that our final n string should be equal.
 So, if every character's occurance should be multiple of the length.
 Then it is possible to equal them.
 
+
+/// If you have any better approach , Feel free to share with me.
+
