@@ -101,6 +101,16 @@ int main()
 Explanation:
 
 
+ (| x1 - x2 | + | y1 - y2 |)^2 =  ( x1 - x2 )^2 + ( y1 - y2 )^2.
+ ( x1 - x2 )^2 + 2( x1 - x2 )( y1 - y2 ) + ( y1 - y2 )^2 = ( x1 - x2 )^2 + ( y1 - y2 )^2.
+ 
+ let x = 2( x1 - x2 )( y1 - y2 ).
+ 
+ If x = 0.
+ Then these will be equal.
+ 
+ So, only possibilities.
+ if X1==x2 or y1==y2 then x will become 0.
  
 ----------------------------------------------------------------------------------------------------------------
 
