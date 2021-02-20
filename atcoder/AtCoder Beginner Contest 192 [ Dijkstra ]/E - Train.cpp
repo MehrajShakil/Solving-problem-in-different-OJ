@@ -76,9 +76,8 @@ const ll K = 1e6 + 1;
 
 /// Global...
 
-vector < pair < ll , ll > > e[N];
-vector < ll > lef[N];
-ll T[N] , M[N];
+vector < array < int , 3 > > e[N]; /// learned /// Alhamdulillah.
+
 
 ll node , edge , x , y;
 
@@ -98,16 +97,16 @@ ll dijkstra ( ll node ){
 
      for ( auto child : e[u] ){
 
-        int time = T[child.second];
-        int mul = M[child.second];
+        int time = child[1];
+        int mul = child[2];
 
         ll need = cost/mul;
 
         if ( cost%mul ) need++;
         ll mn = need*mul;
-        if ( ( mn + time ) < dis[child.first] ) {
-           dis[child.first] = mn + time  ;
-           pq.push ( { -dis[child.first] , child.first } );
+        if ( ( mn + time ) < dis[child[0]] ) {
+           dis[child[0]] = mn + time;
+           pq.push ( { -dis[child[0]] , child[0] } );
         }
      }
    }
@@ -121,10 +120,10 @@ void solve ( int tc ){
   cin >> node >> edge >> x >> y;
 
   for ( ll i = 1 ; i <= edge ; ++i ){
-    ll u , v;
-    cin >> u >> v >> T[i] >> M[i];
-    e[u].push_back ( { v , i } );
-    e[v].push_back ( { u , i } );
+    ll u , v , T , M;
+    cin >> u >> v >> T >> M;
+    e[u].push_back ( { v , T , M } );
+    e[v].push_back ( { u , T , M } );
   }
 
   for ( ll i = 1 ; i<=node ; ++i ) dis[i] = LLONG_MAX;
