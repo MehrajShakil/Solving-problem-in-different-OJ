@@ -77,15 +77,15 @@ const int K = 1e6 + 1;
 /// Global...
 
 ll all[21][4];
-ll dp[21][4][20000];
+ll dp[21][4];
 ll n;
 
-ll recur ( ll position , ll color , ll sum ){
+ll recur ( ll position , ll color ){
 
    if ( position == n ) {
     return 0;
    }
-   ll &ret = dp[position][color][sum];
+   ll &ret = dp[position][color];
 
    if ( ~ret ) return ret;
 
@@ -93,8 +93,7 @@ ll recur ( ll position , ll color , ll sum ){
 
    for ( int i = 1 ; i<=3 ; ++i ) {
     if ( color == i ) continue;
-    ret = min ( ret , all[position][i] + recur ( position + 1 , i , sum + all[position][i] ) );
-
+    ret = min ( ret , all[position][i] + recur ( position + 1 , i ) );
    }
 
    return ret;
@@ -111,13 +110,11 @@ void solve ( int tc ){
    }
 
    for ( int i = 0 ; i < n ; ++i ) {
-      for ( int j = 0 ; j <= 20000 ; ++j ) {
-        dp[i][3][j] = dp[i][1][j] = dp[i][2][j] = -1;
-      }
+        dp[i][3] = dp[i][1] = dp[i][2] = -1;
    }
-   dp[0][0][0] = -1;
+   dp[0][0] = -1;
 
-   cout << "Case " << tc << ": " << recur ( 0 , 0 , 0 ) << "\n";
+   cout << "Case " << tc << ": " << recur ( 0 , 0 ) << "\n";
 
    return;
 }
