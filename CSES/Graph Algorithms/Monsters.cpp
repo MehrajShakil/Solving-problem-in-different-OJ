@@ -1,26 +1,30 @@
 ///   BISMILLAHIR RAHMANIR RAHEEM
 ///   ALLAH IS WATCHING ME
-///   ALLAH save us from COVID-19.Amin.
+
 
 ///   Every soul shall taste death.
 
-///   Tag ::
-
 #include<bits/stdc++.h>
+
 #include <ext/pb_ds/assoc_container.hpp>
 #include <ext/pb_ds/tree_policy.hpp>
 #include <ext/pb_ds/detail/standard_policies.hpp>
 
+
+
 ///  order_of_key return number of elements less than x.
 ///  find_by_order return index.
-
 using namespace std;
 using namespace __gnu_pbds;
 
 
-#define MOHAMMAD  ios::sync_with_stdio(0);cin.tie(0);
-#define all(x)    (x).begin(), (x).end()
-#define AE        cout << fixed << setprecision(2);
+#define MUHAMMAD        ios::sync_with_stdio(0);cin.tie(0);
+#define all(x)          (x).begin(), (x).end()
+#define AE              cout << fixed << setprecision(10);
+#define ld              double
+#define f               first
+#define ss              second
+
 
 /// faster.
 #pragma GCC optimize("Ofast")
@@ -31,10 +35,15 @@ int dy8[] = {1,-1, 1, -1, 0, 0, -1, 1};
 int dx4[]= {1,-1,0,0}; // 4-direction...........
 int dy4[]= {0,0,1,-1};
 
-using ll = long long;
-const ll MOD = 1e9 + 7;
+
+using ll = long long int;
+const ll MOD =  998244353;
+const ld PI = acos(-1.0);
+
 
 typedef tree< int, null_type, less<int>, rb_tree_tag,tree_order_statistics_node_update> ordered_set;
+typedef tree< int, null_type, greater<int>, rb_tree_tag,tree_order_statistics_node_update> ordered_set_boro;
+
 typedef tree<pair<int, int>,null_type,less<pair<int, int>>,rb_tree_tag,tree_order_statistics_node_update> ordered_multiset;
 
 //debug
@@ -59,157 +68,185 @@ inline ll modPow(ll b, ll p) { ll r = 1; while(p) { if(p&1) r = modMul(r, b); b 
 inline ll modInverse(ll a) { return modPow(a, MOD-2); }  /// When MOD is prime.
 inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 
-//***********************************************  The END **********************************************************************************************************************************
-const ll N = 1e3;
-const ll INF = 1e15;
-const ll limit = (1LL<<64) - 1;
-
-string ans ="UDLR";
-vector < char > path;
-char grid[N+1][N+1];
-bool ff = 0;
-ll n , m , sx , sy , ex , ey ;
-ll depa[N+1][N+1] , depmonster[N+1][N+1];
-bool visit[N+1][N+1];
-map < pair < ll , ll > , pair < ll , ll >  > parent;
-queue < pair < ll , ll > > qq;
-
-ll mn = INF;
-
-void bfs1 ( ){
-
-  while ( qq.size() ) {
-       ll x = qq.front().first;
-       ll y = qq.front().second;
-       qq.pop();
-
-       for ( ll k = 0 ; k<4 ; k++ ){
-           ll xx = x + dx4[k];
-           ll yy = y + dy4[k];
-
-           if ( xx<0 or xx>=n or yy<0 or yy>=m or grid[xx][yy]=='#' or grid[xx][yy]=='A' ) continue;
-           if ( ( depmonster[x][y] + 1 ) < depmonster[xx][yy] ){
-               qq.push( { xx , yy } );
-               depmonster[xx][yy] = depmonster[x][y] + 1;
-           }
-       }
-  }
+/// Geometry section.
+ld degree_to_radian( ld x ){
+	ld ans = ((ld)(acos(-1.0)/180.0)*x);
+	return ans;
 }
 
-void bfs ( ll x , ll y , ll f ){
-  queue < pair < ll , ll > > q;
-  q.push( { x , y } );
-  if ( f == 1) depa[x][y] = 0;
-///  if ( f == 0 ) depb[x][y] = 0;
+//***********************************************  The END **********************************************************************************************************************************
 
-  while ( q.size() ) {
-       x = q.front().first;
-       y = q.front().second;
-     //  if ( f == 2 ) visit[x][y] = 1;
-       q.pop();
-      // if ( ( f==1 or f==2 ) and grid[x][y] == 'B' ) return;
-      // if ( f==0 and grid[x][y] == 'A' ) return;
-       ll corner = 0;
-       for ( ll k = 0 ; k<4 ; k++ ){
-           ll xx = x + dx4[k];
-           ll yy = y + dy4[k];
-           if ( xx>=0 and xx<n and yy>=0 and yy<m ) corner++;
-           if ( f==2 and visit[xx][yy] ) continue;
-           if ( xx<0 or xx>=n or yy<0 or yy>=m or grid[xx][yy]=='#' or grid[xx][yy]=='M' ) continue;
-           if ( f==1 and  ( depa[x][y] + 1 ) < depa[xx][yy] ){
-               q.push( { xx , yy } );
-               depa[xx][yy] = depa[x][y] + 1;
-               parent[ { xx , yy } ] = { x , y };
-           }
-       }
-      // dbg ( x , y , corner );
-       if ( corner != 4  and depa[x][y]<depmonster[x][y] ) {
-          if ( mn>depa[x][y] ){
-              mn = depa[x][y];
-              ex = x;
-              ey = y;
-          }
-       }
-  }
+const ll N = 1e3+10;
+const ll INF = 1e18;
+const ld EPS   = 1e-9;
+const ll limit = (1LL<<32) - 1;
+const ll K = 1e5+1;
+
+/// --------------------------------------------------------------
+
+int n,m;
+char grid[N][N];
+
+vector<vector<int>> bfs(queue<pair<int,int>> &q){
+     vector<vector<int>> cost;
+     cost.resize(n+1);
+     for ( int i = 0 ; i <= n ; ++i ) {
+        cost[i].resize(m+1);
+        for(int j = 0 ; j <= m ; ++j ) cost[i][j] = n*m+10;
+     }
+
+     queue<pair<int,int>> temp;
+
+     while(q.size()){
+        pair<int,int> p = q.front();q.pop();
+        cost[p.first][p.second] = 0;
+        temp.push(p);
+     }
+
+     while(temp.size()){
+        pair<int,int> p = temp.front();temp.pop();
+        q.push(p);
+     }
+
+     while(q.size()){
+        pair<int,int> p = q.front();q.pop();
+        for ( int i = 0 ; i < 4 ; ++i ) {
+            int x = p.first + dx4[i];
+            int y = p.second + dy4[i];
+            if(x>n or x < 1 or y > m or y < 1 or grid[x][y]=='#' ) continue;
+            if(cost[p.first][p.second]+1<cost[x][y]){
+              cost[x][y] = cost[p.first][p.second]+1;
+              q.push( { x , y } );
+            }
+        }
+     }
+     return cost;
+}
+
+char go ( int i ) {
+    if(i==0) return 'U';
+    if(i==1) return 'D';
+    if(i==2) return 'L';
+    if(i==3) return 'R';
+}
+
+
+void Solution ( int tc ){
+
+     cin >> n >> m;
+
+     queue<pair<int,int>> q,qq;
+
+     for ( int i = 1 ; i<=n ; ++i ) {
+        for ( int j = 1 ; j<=m ; ++j ) {
+            cin >> grid[i][j];
+            if(grid[i][j]=='M') q.push({i,j});
+            if(grid[i][j]=='A') qq.push({i,j});
+        }
+     }
+
+     vector<vector<int>> monster = bfs(q);
+     vector<vector<int>> cost = bfs(qq);
+
+     int posX = -1;
+     int posY = -1;
+
+     bool done = false;
+     for ( int i = 1 ; i<=n ; ++i ) {
+        for ( int j = 1 ; j<=m ; ++j ) {
+            /// dbg ( i , j , cost[i][j] , monster[i][j] );
+            if( (i==1 or j==1 or i == n or j == m) and cost[i][j] < monster[i][j] ) {
+                posX = i;
+                posY = j;
+
+                done = true;
+                break;
+            }
+        }
+        if(done) break;
+     }
+
+     if(posX==-1) cout << "NO\n";
+     else{
+        cout << "YES\n";
+        int value = cost[posX][posY];
+        string seq = "";
+
+        /// dbg(value, posX , posY );
+
+        while(value){
+            for ( int i = 0 ; i < 4 ; ++i ) {
+                int x = posX + dx4[i];
+                int y = posY + dy4[i];
+                /// dbg ( x , y , cost[x][y] , value );
+                if(x>n or x < 1 or y > m or y < 1 ) continue;
+                if(cost[x][y]==value-1){
+                    /// dbg ( x , y );
+                    posX = x;
+                    posY = y;
+                    seq+=go(i);
+                    break;
+                }
+            }
+            value--;
+        }
+        reverse(all(seq));
+        cout << seq.size() << "\n";
+        cout << seq << "\n";
+     }
 }
 
 int main()
 {
 
-  MOHAMMAD
-  cin >> n >> m;
+   MUHAMMAD;
 
-  for ( ll i = 0 ; i < n ; i++ ){
-     for ( ll j = 0 ; j < m ; j++ ){
-         cin >> grid[i][j];
-         if ( grid[i][j] == 'A' ) sx = i , sy = j;
-         depa[i][j] = depmonster[i][j] = INF;
-     }
-  }
 
-  for ( ll i = 0 ; i < n ; i++ ){
-     for ( ll j = 0 ; j < m ; j++ ){
-         if ( grid[i][j] == 'M' ) {
-             qq.push( { i , j } );
-             depmonster[i][j] = 0;
-         }
-     }
-  }
-  bfs1 ( );
-  bfs ( sx , sy , 1 );
-  //if ( ff == 0 ) {
- //      cout << "NO\n";
-  //     return 0;
- // }
- // dbg ( depa[ex][ey] );
- // bfs ( ex , ey , 0 );
- // dbg ( depb[sx][sy] );
-  //bfs ( sx , sy , 2 );
-ll cur = depa[ex][ey];
-if ( cur==0 ){
-    cout << "YES\n0";
-    return 0;
 
-}
-if ( cur==INF ) cur = 0;
+   // AE;
 
-while ( cur-- ){
-    ll cx = parent[ { ex , ey } ].first;
-    ll cy = parent[ { ex , ey } ].second;
-    for ( ll k = 0 ; k<4 ; ++k ){
-         ll xx = dx4[k] + ex;
-         ll yy = dy4[k] + ey;
-         if ( xx==cx and yy==cy ){
-            path.push_back( ans[k] );
-            break;
-         }
+   /*
+   #ifdef OJ
+        freopen("input.txt", "r", stdin);
+        freopen("output.txt", "w", stdout);
+   #endif
+   */
+
+
+    int testcase = 1 , tc = 0;
+
+
+
+
+
+    /// cin >> testcase;
+
+    for ( int i = 1 ; i <= testcase ; ++i ){
+       Solution( ++tc );
     }
-    ex = cx;
-    ey = cy;
-}
-reverse ( all ( path ) );
 
-if ( path.size() ){
-    cout << "YES\n";
-    cout << path.size() << "\n";
-    for ( auto c : path ) cout << c;
-}
-else{
-      cout << "NO\n";
+    return 0;
 }
 
 
-
-}
+  /// __mhs, Do you check
+  /// -> overflow
+  /// -> array bound.
 
 
 /*
 
+ LCA:
+
+
 Explanation:
 
+ Time :
 
 
-TODO :
+----------------------------------------------------------------------------------------------------------------
+
+
 
   Alhamdulillah
 */
